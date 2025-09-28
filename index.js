@@ -6,8 +6,14 @@ const prisma = require('./prismaClient');
 const cors = require('cors');
 app.use(cors());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const { contentRouter } = require('./routers/content');
 app.use("/content", contentRouter);
+
+const { userRouter } = require('./routers/user');
+app.use("/", userRouter);
 
 app.get("/info", (req, res) => {
     res.json({ msg: "Yaycha API"})
