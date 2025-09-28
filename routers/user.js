@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const bcrypt = require('bcrypt');
+
 const prisma = require('../prismaClient');
 
 router.get("/users", async (req, res) => {
@@ -36,6 +38,23 @@ router.get("/users/:id", async (req, res) => {
     } catch (e) {
         res.status(500).json( { error: e} );
     }
+})
+
+router.post("/users", async (req, res) => {
+    const { name, username, bio, password } = req.body;
+
+    if (!name || !username || !password) {
+        return res
+            .status(400)
+            .json({ msg: "name, username and password are required" });
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+        data: { name, username, password: hash, bio, }
+    })
+
+    res.json(user);
 })
 
 module.exports = { userRouter: router };
