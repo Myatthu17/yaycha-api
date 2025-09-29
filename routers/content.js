@@ -13,7 +13,9 @@ router.get("/posts", async (req, res) => {
             orderBy: { id: "desc" },
             take: 20,
         });
+        
         res.json(data);
+
     } catch (e) {
         res.status(500).json({ error: e});
     }
