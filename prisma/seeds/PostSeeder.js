@@ -7,7 +7,7 @@ async function PostSeeder() {
     const data = [];
 
     for (let i = 0; i < 20; i++) {
-        const content = faker.lorem.paragraphs({ min: 1, max: 10 });
+        const content = faker.lorem.paragraphs();
         const userId = faker.number.int({ min: 1, max: 10 });
 
         data.push({ content, userId });
