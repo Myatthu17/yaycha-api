@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const prisma = require('../prismaClient');
 
 const jwt = require('jsonwebtoken');
+const {auth} = require("../middlewares/auth")
 
 router.get("/users", async (req, res) => {
     try {
@@ -80,6 +81,11 @@ router.post("/login", async (req, res) => {
     }
 
     res.status(401).json({ msg: "incorrect username or password" });
+})
+
+router.get("/verify", auth, async(req, res) => {
+    const user = res.locals.user;
+    res.json(user);
 })
 
 module.exports = { userRouter: router };
