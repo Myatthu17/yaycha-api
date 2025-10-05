@@ -10,6 +10,7 @@ router.get("/posts", async (req, res) => {
             include: {
                 user: true,
                 comments: true,
+                likes: true,
             },
             orderBy: { id: "desc" },
             take: 20,
@@ -31,8 +32,12 @@ router.get("/posts/:id", async (req, res) => {
             include: {
                 user: true,
                 comments: {
-                    include: { user: true },
+                    include: {
+                        user: true,
+                        likes: true,
+                    },
                 },
+                likes: true,
             },
         });
         
