@@ -116,7 +116,7 @@ router.post("/comments", auth, async (req, res) => {
     res.json(comment)
 })
 
-router.post("/likes/posts/:id", auth, async (req, res) => {
+router.post("/like/posts/:id", auth, async (req, res) => {
     const { id } = req.params;
     const user = res.locals.user;
 
