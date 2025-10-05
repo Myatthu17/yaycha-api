@@ -178,7 +178,7 @@ router.delete("/unlike/comments/:id", auth, async (req, res) => {
     res.json({ msg: `Unlike comment ${id}` })
 })
 
-router.get("/likes/posts/:id", auth, async (req, res) => {
+router.get("/likes/posts/:id", async (req, res) => {
     const { id } = req.params;
     
     const data = await prisma.postLike.findMany({
@@ -191,14 +191,14 @@ router.get("/likes/posts/:id", auth, async (req, res) => {
                     followers: true,
                     following: true,
                 }
-            }
+            }   
         }
     })
 
     res.json(data);
 })
 
-router.get("/likes/comments/:id", auth, async (req, res) => {
+router.get("/likes/comments/:id", async (req, res) => {
     const { id } = req.params;
 
     const data = await prisma.commentLike.findMany({
