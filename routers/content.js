@@ -145,4 +145,32 @@ router.delete("/unlike/posts/:id", auth, async (req, res) => {
     res.json({ msg: `Unlike post ${id}`})
 })
 
+router.post("/like/comments/:id", auth, async (req, res) => {
+    const { id } = req.params;
+    const user = res.locals.user;
+
+    const like = await prisma.commentLike.create({
+        data: {
+            commentId: Number(id),
+            userId: Number(user.id),
+        },
+    })
+
+    res.json({ like })
+})
+
+router.delete("/unlike/comments/:id", auth, async (req, res) => {
+    const { id } = req.params;
+    const user = res.locals.user;
+
+    await prisma.commentLike.deleteMany({
+        where: {
+            commentId: Number(id),
+            userId: Number(user.id),
+        },
+    })
+
+    res.json({ msg: `Unlike comment ${id}` })
+})
+
 module.exports = { contentRouter: router };
