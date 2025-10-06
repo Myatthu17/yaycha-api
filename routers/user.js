@@ -14,6 +14,8 @@ router.get("/users", async (req, res) => {
             include: {
                 posts: true,
                 comments: true,
+                followers: true,
+                following: true,
             },
             orderBy: { id: "desc" },
             take: 20,
@@ -34,6 +36,8 @@ router.get("/users/:id", async (req, res) => {
             include: {
                 posts: true,
                 comments: true,
+                followers: true,
+                following: true,
             }
         })
 
@@ -93,6 +97,34 @@ router.post("/login", async (req, res) => {
 router.get("/verify", auth, async(req, res) => {
     const user = res.locals.user;
     res.json(user);
+})
+
+router.post("/follow/:id", auth, async (req, res) => {
+    const user = res.locals.user;
+    const { id } = req.params;
+
+    const data = await prisma.follow.create({
+        data: {
+            followerId: Number(user.id),
+            followingId: Number(id),
+        }
+    })
+
+    res.json(data)
+})
+
+router.delete("/unfollow/:id", auth, async (req, res) => {
+    const user = res.locals.user;
+    const { id } = req.params;
+
+    await prisma.follow.deleteMany({
+        where: {
+            followerId: Number(user.id),
+            followingId: Number(id),
+        }
+    })
+
+    res.json({ msg: `Unfollow user ${id}`})
 })
 
 module.exports = { userRouter: router };
