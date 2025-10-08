@@ -1,9 +1,5 @@
 
 ---
-
-## ⚙️ `yaycha-api` — Backend README
-
-```markdown
 # ⚙️ Yaycha API — Backend for Yaycha
 
 **Yaycha API** is the backend service that powers the Yaycha social media platform.  
