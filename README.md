@@ -2,7 +2,7 @@
 ---
 # ⚙️ Yaycha API — Backend for Yaycha
 
-**Yaycha API** is the backend service that powers the Yaycha social media platform.  
+**Yaycha API** is the backend service that powers the **[Yaycha](https://github.com/Myatthu17/yaycha)** social media platform.  
 It handles all the core functionalities — authentication, posts, comments, likes, follows, and user management — built using **Node.js**, **Express**, and **Prisma ORM**.
 
 ---
