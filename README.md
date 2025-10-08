@@ -47,3 +47,27 @@ cd yaycha-api
 npm install
 ```
 
+Create a .env file with the following variables:
+
+```ini
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="your_secret_key_here"
+```
+
+Then run the commands below to initialize the database:
+```bash
+npx prisma migrate dev --name init
+npx prisma db seed
+```
+
+and then run the server:
+```bash
+npx nodemon index.js
+```
+Server will run on 👉 http://localhost:5000
+
+🙌 Credits
+
+Sayar Ei Maung — for the Rock Star Developer 2025 book
+me — for developing and completing the Yaycha backend 💪
+
