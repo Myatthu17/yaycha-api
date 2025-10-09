@@ -1,43 +1,29 @@
-// ws.js
-
 const jwt = require("jsonwebtoken");
-
 const secret = process.env.JWT_SECRET;
+
+const express = require("express")
+const router = express.Router();
+
+require('express-ws')(router)
 
 let clients = [];
 
-// Export a function that receives the express app instance
-const setupWsRoutes = (app) => {
-  // Use app.ws directly since express-ws patches the app object
-  app.ws("/subscribe", (ws, req) => {
-    console.log("WS: New connection received");
+router.ws("//subscribe", (ws, req) => {
+  console.log("WS: New connection received");
 
-    ws.on("message", msg => {
-      try {
-        const { token } = JSON.parse(msg);
-        jwt.verify(token, secret, (err, user) => {
-          if (err) {
-            console.log("WS: Token verification failed for incoming message");
-            return;
-          }
-          // Check if client is already connected to avoid duplicates
-          if (!clients.some(c => c.ws === ws)) {
-             clients.push({ userId: user.id, ws });
-             console.log(`WS: Client added: ${user.id}`);
-          }
-        });
-      } catch (err) {
-        console.error("WS: Invalid message or JSON parse error", err);
-      }
-    });
+  ws.on("message", msg => {
+    const { token } = JSON.parse(msg);
+    console.log("WS: token received");
 
-    ws.on("close", () => {
-      clients = clients.filter(c => c.ws !== ws);
-      console.log("WS: Client disconnected");
-    });
-  });
-};
+    jwt.verify(token, secret, (err, user) => {
+      if (err) return false;
+
+      clients.push({ userId: user.id, ws})
+
+      console.log(`WS: Client added: ${user.id}`)
+    })
+  })
+})
 
 
-// Export clients and the setup function
-module.exports = { clients, setupWsRoutes };
+module.exports = { clients, wsRouter: router };

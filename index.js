@@ -1,6 +1,8 @@
 const express = require("express");
+const expressWs = require("express-ws");
+
 const app = express();
-require("express-ws")(app);
+expressWs(app);
 
 const prisma = require("./prismaClient");
 
@@ -16,8 +18,8 @@ app.use("/content", contentRouter);
 const { userRouter } = require("./routers/user");
 app.use("/", userRouter);
 
-const { setupWsRoutes, clients } = require('./routers/ws')
-setupWsRoutes(app)
+const { wsRouter, clients } = require('./routers/ws')
+app.use("/", wsRouter);
 
 
 const server = app.listen(8000, () => {
