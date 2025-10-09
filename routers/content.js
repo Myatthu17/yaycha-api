@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const prisma = require('../prismaClient');
-const {auth, isOwner} = require('../middlewares/auth')
+const {auth, isOwner} = require('../middlewares/auth');
+const { clients } = require('./ws');
 
 router.get("/posts", async (req, res) => {
     try {
@@ -320,6 +321,14 @@ async function addNoti({ type, content, postId, userId}) {
     })
 
     if (post.userId == userId) return false;
+
+    clients.map(client => {
+        if (client.userId == post.userId) {
+            client.ws.send(JSON.stringify({ event: "notis"}))
+            console.log(`WS: event sent to ${client.userId}: notis`)
+        }
+    })
+
 
     return await prisma.noti.create({
         data: {
