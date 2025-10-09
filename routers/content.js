@@ -276,7 +276,7 @@ router.get("/notis", auth, async (req, res) => {
                 userId: Number(user.id),
             }
         },
-        include: { user: ture },
+        include: { user: true },
         orderBy: { id: "desc"},
         take: 20,
     })
