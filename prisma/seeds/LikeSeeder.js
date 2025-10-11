@@ -8,7 +8,7 @@ async function LikeSeeder() {
     for (let i = 1; i <= 5; i++) {
         await prisma.postLike.create({
             data: {
-                postId: 20,
+                postId: 10,
                 userId: i
             }
         })
